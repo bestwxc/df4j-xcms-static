@@ -24,9 +24,15 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const currentUser = await queryCurrent();
-      return currentUser;
+      const resultVo = await queryCurrent();
+      if (resultVo.errorNo === 0) {
+        const currentUser = resultVo.result;
+        return currentUser;
+      }
+      throw new Error(`查询当前用户异常code:${resultVo.errorNo}, msg:${resultVo.errorInfo}`)
     } catch (error) {
+      console.log('查询当前用户异常，重定向到/user/login')
+      console.log(error)
       history.push('/user/login');
     }
     return undefined;
@@ -53,6 +59,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
+      console.log(history);
+      console.log(initialState);
       // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== '/user/login') {
         history.push('/user/login');
@@ -108,6 +116,23 @@ const errorHandler = (error: ResponseError) => {
   throw error;
 };
 
+const errorConfig = {
+
+// @ts-ignore
+  adaptor: resData => {
+    return resData
+    console.log(resData);
+    const data = resData.result
+    const success = resData.errorNo === 0
+    const res = {...resData, data, success}
+    console.log(res)
+    return res;
+  },
+};
+
+
 export const request: RequestConfig = {
   errorHandler,
+  errorConfig,
 };
+

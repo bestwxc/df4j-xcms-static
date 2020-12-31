@@ -1,5 +1,25 @@
 declare namespace API {
+  export type XcmsResult = {
+    errorNo: number,
+    errorInfo: string,
+    resultType: 'list' | 'object',
+    result?: any,
+    page?: boolean,
+    pageNum?: number,
+    pageSize?: number,
+    total?: number
+  }
   export type CurrentUser = {
+    userName: string,
+    nickName: string,
+    mobileNo: string,
+    sex: number,
+    userType: number,
+    sourceType: number,
+    avatar?: string,
+    selfIntroduction?: string
+  }
+  export type BeforeCurrentUser = {
     avatar?: string;
     name?: string;
     title?: string;

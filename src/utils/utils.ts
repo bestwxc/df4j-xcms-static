@@ -18,3 +18,7 @@ export const isAntDesignProOrDev = (): boolean => {
   }
   return isAntDesignPro();
 };
+
+export const adaptRes = (res: API.XcmsResult) => {
+  return {...res, data: res.errorNo}
+};

@@ -22,6 +22,20 @@
     component: './Welcome',
   },
   {
+    path: '/system',
+    name: '系统管理',
+    icon: 'crown',
+    // redirect: '/system/MenuManagement',
+    routes: [
+      {
+        path: 'MenuManagement',
+        name: '菜单管理',
+        icon: 'smile',
+        component: './system/MenuManagement'
+      }
+    ]
+  },
+  {
     path: '/admin',
     name: 'admin',
     icon: 'crown',
@@ -41,6 +55,13 @@
     icon: 'table',
     path: '/list',
     component: './TableList',
+  },
+  {
+    name: 'demo',
+    icon: 'table',
+    path: '/demo',
+    access: 'none',
+    component: './system/MenuManagement',
   },
   {
     path: '/',

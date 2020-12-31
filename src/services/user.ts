@@ -5,7 +5,10 @@ export async function query() {
 }
 
 export async function queryCurrent() {
-  return request<API.CurrentUser>('/api/currentUser');
+  return request<API.XcmsResult>('/api/xcms/core/user/info', {
+    method: 'POST',
+    data: {}
+  });
 }
 
 export async function queryNotices(): Promise<any> {
