@@ -1,5 +1,25 @@
 ﻿export default [
   {
+    name: 'logger',
+    icon: 'table',
+    access: 'none',
+    path: 'logger',
+    routes: [
+      {
+        name: 'LoginLogManagement',
+        icon: 'table',
+        path: '/logger/LoginLogManagement',
+        component: './logger/LoginLogManagement',
+      },
+      {
+        name: 'OperLogManagement',
+        icon: 'table',
+        path: '/logger/OperLogManagement',
+        component: './logger/OperLogManagement',
+      },
+    ],
+  },
+  {
     path: '/user',
     layout: false,
     routes: [
