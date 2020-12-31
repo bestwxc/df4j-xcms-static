@@ -1,15 +1,15 @@
 import { request } from 'umi';
 
 export type LoginParamsType = {
-  username: string;
-  password: string;
-  mobile: string;
+  userName: string;
+  userPass: string;
+  mobileNo: string;
   captcha: string;
   type: string;
 };
 
 export async function fakeAccountLogin(params: LoginParamsType) {
-  return request<API.LoginStateType>('/api/login/account', {
+  return request<API.XcmsResult>('/api/xcms/core/user/login', {
     method: 'POST',
     data: params,
   });
@@ -20,5 +20,8 @@ export async function getFakeCaptcha(mobile: string) {
 }
 
 export async function outLogin() {
-  return request('/api/login/outLogin');
+  return request<API.XcmsResult>('/api/xcms/core/user/logout', {
+    method: 'POST',
+    data: {},
+  });
 }

@@ -1,16 +1,8 @@
-import {
-  AlipayCircleOutlined,
-  LockTwoTone,
-  MailTwoTone,
-  MobileTwoTone,
-  TaobaoCircleOutlined,
-  UserOutlined,
-  WeiboCircleOutlined,
-} from '@ant-design/icons';
-import { Alert, Space, message, Tabs } from 'antd';
+import { LockTwoTone, MailTwoTone, MobileTwoTone, UserOutlined } from '@ant-design/icons';
+import { Alert, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
-import { useIntl, Link, history, FormattedMessage, SelectLang, useModel } from 'umi';
+import { FormattedMessage, history, Link, SelectLang, useIntl, useModel } from 'umi';
 import Footer from '@/components/Footer';
 import type { LoginParamsType } from '@/services/login';
 import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
@@ -65,14 +57,14 @@ const Login: React.FC = () => {
     try {
       // 登录
       const msg = await fakeAccountLogin({ ...values, type });
-      if (msg.status === 'ok') {
+      if (msg.errorNo === 0) {
         message.success('登录成功！');
         await fetchUserInfo();
         goto();
         return;
       }
       // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      setUserLoginState({ status: 'error', type });
     } catch (error) {
       message.error('登录失败，请重试！');
     }
@@ -88,10 +80,10 @@ const Login: React.FC = () => {
           <div className={styles.header}>
             <Link to="/">
               <img alt="logo" className={styles.logo} src="/logo.svg" />
-              <span className={styles.title}>Ant Design</span>
+              <span className={styles.title}>XCMS</span>
             </Link>
           </div>
-          <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div>
+          <div className={styles.desc}>XCMS内容管理系统</div>
         </div>
 
         <div className={styles.main}>
@@ -140,21 +132,21 @@ const Login: React.FC = () => {
               <LoginMessage
                 content={intl.formatMessage({
                   id: 'pages.login.accountLogin.errorMessage',
-                  defaultMessage: '账户或密码错误（admin/ant.design)',
+                  defaultMessage: '账户或密码错误',
                 })}
               />
             )}
             {type === 'account' && (
               <>
                 <ProFormText
-                  name="username"
+                  name="userName"
                   fieldProps={{
                     size: 'large',
                     prefix: <UserOutlined className={styles.prefixIcon} />,
                   }}
                   placeholder={intl.formatMessage({
                     id: 'pages.login.username.placeholder',
-                    defaultMessage: '用户名: admin or user',
+                    defaultMessage: '请输入用户名',
                   })}
                   rules={[
                     {
@@ -169,14 +161,14 @@ const Login: React.FC = () => {
                   ]}
                 />
                 <ProFormText.Password
-                  name="password"
+                  name="userPass"
                   fieldProps={{
                     size: 'large',
                     prefix: <LockTwoTone className={styles.prefixIcon} />,
                   }}
                   placeholder={intl.formatMessage({
                     id: 'pages.login.password.placeholder',
-                    defaultMessage: '密码: ant.design',
+                    defaultMessage: '请输入密码！',
                   })}
                   rules={[
                     {
@@ -201,7 +193,7 @@ const Login: React.FC = () => {
                     size: 'large',
                     prefix: <MobileTwoTone className={styles.prefixIcon} />,
                   }}
-                  name="mobile"
+                  name="mobileNo"
                   placeholder={intl.formatMessage({
                     id: 'pages.login.phoneNumber.placeholder',
                     defaultMessage: '手机号',
@@ -268,7 +260,7 @@ const Login: React.FC = () => {
                     if (result === false) {
                       return;
                     }
-                    message.success('获取验证码成功！验证码为：1234');
+                    message.success('获取验证码成功！');
                   }}
                 />
               </>
@@ -290,12 +282,6 @@ const Login: React.FC = () => {
               </a>
             </div>
           </ProForm>
-          <Space className={styles.other}>
-            <FormattedMessage id="pages.login.loginWith" defaultMessage="其他登录方式" />
-            <AlipayCircleOutlined className={styles.icon} />
-            <TaobaoCircleOutlined className={styles.icon} />
-            <WeiboCircleOutlined className={styles.icon} />
-          </Space>
         </div>
       </div>
       <Footer />
